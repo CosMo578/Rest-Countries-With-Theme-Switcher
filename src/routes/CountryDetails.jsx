@@ -7,6 +7,13 @@ export const CountryDetails = () => {
   const params = useParams();
   const name = params.name;
 
+  function findBorder(border) {
+    let borderCountry = countries.find(
+      (country) => country.alpha3Code === border,
+    );
+    return borderCountry;
+  }
+
   const [Country, setCountry] = useState([]);
 
   useEffect(() => {
@@ -17,10 +24,10 @@ export const CountryDetails = () => {
   }, [Country, name]);
 
   return (
-    <div className="pt-12 px-8 h-full md:px-10">
+    <div className="px-8 pt-12 md:overflow-y-hidden md:px-10">
       <Link
         to="/"
-        className="rounded-lg py-4 px-6 font-semibold shadow-xl dark:bg-dark-ele mb-10"
+        className="mb-10 rounded-lg px-6 py-4 font-semibold shadow-xl dark:bg-dark-ele"
       >
         <span className="mr-4 inline-block align-middle text-xl">
           <BsArrowLeft />
@@ -28,19 +35,19 @@ export const CountryDetails = () => {
         Back
       </Link>
       {Country ? (
-        <section key={name} className="flex flex-col items-start md:flex-row mt-16">
-          <div className="md:w-2/5 aspect-video">
-            <img
-              src={Country.flags ? Country.flags.svg : "gg"}
-              alt="Error Image"
-              className="h-auto w-auto object-center object-fill"
-            />
-          </div>
-          <div className="lg:ml-auto">
+        <section className="mt-16 gap-10 lg:flex">
+          <img
+            src={Country.flags ? Country.flags.svg : "Not Found"}
+            alt="Error Loading Image"
+            className="mb-10 h-auto w-full md:h-[400px] lg:mb-0 lg:w-1/2"
+          />
+
+          <div className="w-full lg:w-1/2">
             <h2 className="mb-6 block text-3xl font-extrabold">
               {Country.name}
             </h2>
-            <ul className="mb-12 flex flex-col items-start gap-10 leading-8 md:flex-row">
+
+            <ul className="mb-8 flex flex-col items-start gap-10 leading-8 md:flex-row">
               <span>
                 <li>
                   Native Name:{" "}
@@ -49,7 +56,6 @@ export const CountryDetails = () => {
                 <li>
                   Population:{" "}
                   <span className="font-light">
-                    {" "}
                     {new Intl.NumberFormat().format(Country.population)}
                   </span>{" "}
                 </li>
@@ -72,41 +78,52 @@ export const CountryDetails = () => {
 
                 <li>
                   Currencies:{" "}
-                  <span className="font-light">{Country.currencies ? Country.currencies[0]?.name : "this"}</span>
-                  
+                  <span className="font-light">
+                    {Country.currencies ? Country.currencies[0]?.name : "this"}
+                  </span>
                 </li>
 
                 <li>
-                  {/* `${Country.languages[0]?.name}, ${Country.languages[1]?.name}, ${Country.languages[2]?.name}, ${Country.languages[4]?.name} ` */}
                   Languages:{" "}
                   {Country.languages
-                    ? Country.languages.forEach((item) => {
-                        return `${item.name}`;
+                    ? Country.languages.map((language, index) => {
+                        return (
+                          <span key={language}>
+                            {language.name}
+                            {index < Country.languages.length - 1 ? ", " : ""}
+                          </span>
+                        );
                       })
-                    : ""}
+                    : "No Languages"}
                 </li>
               </span>
             </ul>
 
-            <span className="flex flex-col justify-start md:flex-row md:items-center">
-              <span className="inline-block md:mr-6 ">Border Countries:</span>
-
-              <ul className="flex-wrap">
-                <li className="mb-4 mr-4 inline-block rounded-sm px-6 py-2 font-light shadow-2xl md:mb-0 dark:bg-dark-ele">
-                  France
-                </li>
-                <li className="mb-4 mr-4 inline-block rounded-sm px-6 py-2 font-light shadow-2xl md:mb-0 dark:bg-dark-ele">
-                  Germany
-                </li>
-                <li className="mb-4 mr-4 inline-block rounded-sm px-6 py-2 font-light shadow-2xl md:mb-0 dark:bg-dark-ele">
-                  Netherlads
-                </li>
-              </ul>
-            </span>
+            <ul>
+              <p className="mb-6 mr-6 md:mb-0 md:inline-block lg:h-full">
+                Border Countries:
+              </p>
+              {Country.borders
+                ? Country.borders.map((border, index) => {
+                    return (
+                      <Link
+                        key={index}
+                        to={`/country/${findBorder(
+                          border,
+                        )?.name.toLowerCase()}`}
+                      >
+                        <li className="mb-3 mr-3 inline-block rounded-sm px-5 py-1.5 font-light shadow-lg dark:bg-dark-ele">
+                          {border}
+                        </li>
+                      </Link>
+                    );
+                  })
+                : "No Borders..."}
+            </ul>
           </div>
         </section>
       ) : (
-        "lost"
+        <p className="mt-[15%] text-center text-4xl">Not Found</p>
       )}
     </div>
   );

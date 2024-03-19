@@ -5,12 +5,11 @@
 
 * {
   font-family: "Nunito Sans", sans-serif;
-  /* @apply border border-red-800; */
 }
 
 .countries {
   box-sizing: border-box;
-  grid-template-columns: repeat(auto-fit, minmax(250px, .5fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 0.5fr));
 }
 
 @media screen and (max-width: 768px) {

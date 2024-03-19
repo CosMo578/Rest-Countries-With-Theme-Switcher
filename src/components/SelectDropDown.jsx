@@ -4,31 +4,17 @@ export function SelectDropDown({ select, setSelect }) {
     <>
       <select
         id="select"
-        className="dark:bg-dark-ele rounded-lg border-2 border-transparent bg-white px-12 py-5 text-left shadow-lg hover:cursor-pointer focus:border-sky-500"
+        className="rounded-lg border-2 border-transparent bg-white px-12 py-5 text-left shadow-lg hover:cursor-pointer focus:border-sky-500 dark:bg-dark-ele"
         value={select}
-        name="Filter by Region"
-        placeholder="Filter by Region"
         onChange={(e) => setSelect(e.target.value)}
       >
         {[
-          {
-            text: "All",
-          },
-          {
-            text: "Africa",
-          },
-          {
-            text: "Americas",
-          },
-          {
-            text: "Asia",
-          },
-          {
-            text: "Europe",
-          },
-          {
-            text: "Oceania",
-          },
+          { text: "All" },
+          { text: "Africa" },
+          { text: "Americas" },
+          { text: "Asia" },
+          { text: "Europe" },
+          { text: "Oceania" },
         ]?.map((name) => {
           return (
             <option
@@ -38,7 +24,7 @@ export function SelectDropDown({ select, setSelect }) {
               }}
               value={name.text}
             >
-              {name.text}
+              {name.text == "All" ? "Filter by Region" : name.text}
             </option>
           );
         })}

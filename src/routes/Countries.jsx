@@ -54,7 +54,7 @@ export function Countries() {
   return (
     <>
       <ScrollButton scrollTop={scrollTop} />
-      <article className="max-w[100vw] p-10">
+      <article className="p-10">
         <section className="md:flex md:items-center md:justify-between">
           <InputSearch value={value} setValue={setValue} />
           <SelectDropDown select={select} setSelect={setSelect} />
@@ -81,14 +81,19 @@ export function Countries() {
                   <h2 className="mb-3 text-lg font-semibold">{country.name}</h2>
 
                   <ul>
-                    <li className="mb-3">
-                      Population:{" "}
-                      {new Intl.NumberFormat().format(country.population)}{" "}
-                    </li>
-
-                    <li className="mb-3">Region: {country.region} </li>
-
-                    <li className="mb-3">Capital: {country.capital} </li>
+                    {[
+                      `Population: ${new Intl.NumberFormat().format(
+                        country.population,
+                      )}`,
+                      `Region: ${country.region}`,
+                      `Capital: ${country.capital}`,
+                    ].map((item) => {
+                      return (
+                        <li key={item} className="mb-3">
+                          {item}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               </Link>
