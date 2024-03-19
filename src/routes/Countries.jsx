@@ -29,31 +29,9 @@ export function Countries() {
     setFilteredCountries(filtered);
   }, [select, value]);
 
-  function scrollTop() {
-    const start = window.scrollY;
-    const dur = 2000;
-    const startTime =
-      "now" in window.performance ? performance.now() : new Date().getTime();
-    const scroll = () => {
-      const elapsed =
-        "now" in window.performance
-          ? performance.now() - startTime
-          : new Date().getTime() - startTime;
-      const progress = Math.min(elapsed / dur, 1);
-      window.scrollTo(0, start + progress * (0 - start));
-      if (progress < 1) {
-        requestAnimationFrame(scroll);
-      }
-    };
-    requestAnimationFrame(scroll);
-    // scrollTo({
-    //   top,
-    //   behavior: "smooth",
-    // });
-  }
   return (
     <>
-      <ScrollButton scrollTop={scrollTop} />
+      <ScrollButton />
       <article className="p-10">
         <section className="md:flex md:items-center md:justify-between">
           <InputSearch value={value} setValue={setValue} />
