@@ -1,22 +1,26 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { countries } from "/data.js";
 import { ScrollButton } from "../components/ScrollButton";
 import { InputSearch } from "../components/InputSearch";
 import { SelectDropDown } from "../components/SelectDropDown";
 
 export function Countries() {
-  const [value, setValue] = useState("");
-  const [select, setSelect] = useState("All");
+  const [searchParams, setSearchParams] = useSearchParams({
+    searchValue: "",
+    select: "All",
+  });
+  const searchValue = searchParams.get("searchValue");
+  const select = searchParams.get("select");
   const [filteredCountries, setFilteredCountries] = useState([]);
 
   useEffect(() => {
     const filtered = countries
       ?.filter((item) => {
-        return value.toLowerCase() === ""
+        return searchValue.toLowerCase() === ""
           ? "Not Found"
-          : item.name.toLowerCase().includes(value.toLowerCase().trim());
+          : item.name.toLowerCase().includes(searchValue.toLowerCase().trim());
       })
       .filter((country) => {
         if (select === "All") {
@@ -27,15 +31,15 @@ export function Countries() {
       });
 
     setFilteredCountries(filtered);
-  }, [select, value]);
+  }, [select, searchValue]);
 
   return (
     <>
       <ScrollButton />
       <article className="p-10">
         <section className="md:flex md:items-center md:justify-between">
-          <InputSearch value={value} setValue={setValue} />
-          <SelectDropDown select={select} setSelect={setSelect} />
+          <InputSearch value={searchValue} setSearchParams={setSearchParams} />
+          <SelectDropDown select={select} setSearchParams={setSearchParams} />
         </section>
 
         <main
